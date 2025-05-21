@@ -5,6 +5,7 @@ services:
       ALLOW_NONE_AUTHENTICATION: "yes"
       ETCD_ADVERTISE_CLIENT_URLS: "http://etcd:2379"
     volumes:
+      - etcd_data:/bitnami/etcd
       - ./import-routes.sh:/import-routes.sh
     ports:
       - 2379:2379
@@ -33,11 +34,13 @@ services:
     restart: on-failure
 
   apisix-dashboard:
-    image: apache/apisix-dashboard:3.0.1-alpine
+    image: apache/apisix-dashboard:3.0.0-alpine
     volumes:
       - ./conf/dashboard_conf.yaml:/usr/local/apisix-dashboard/conf/conf.yaml
     ports:
       - "9000:9000"
+    environment:
+      ADMIN_KEY: "edd1c9f034335f136f87ad84b625c8f1"
     networks:
       - apisix-network
     depends_on:
@@ -58,3 +61,7 @@ services:
 networks:
   apisix-network:
     driver: bridge
+
+volumes:
+  etcd_data:
+    driver: local
