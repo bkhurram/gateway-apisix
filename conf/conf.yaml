@@ -11,14 +11,10 @@ apisix:
   ssl:
     enable: false
 
-etcd:
-  host:
-    - "http://etcd:2379"
-  prefix: "/apisix"
-  timeout: 30
-
 deployment:
-  role: traditional
+  role: data_plane
+  role_data_plane:
+    config_provider: yaml
   admin:
     allow_admin:
       - 0.0.0.0/0

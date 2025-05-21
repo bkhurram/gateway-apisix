@@ -6,7 +6,7 @@ conf:
     - 0.0.0.0/0
   etcd:
     endpoints:
-      - http://etcd:2379
+      - http://apisix:9180
     prefix: "/apisix"
     timeout: 30
     username: ~
@@ -21,6 +21,7 @@ conf:
       file_path: logs/error.log
     access_log:
       file_path: logs/access.log
+
 authentication:
   secret: secret
   expire_time: 3600
