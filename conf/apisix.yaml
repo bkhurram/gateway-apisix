@@ -1,0 +1,20 @@
+routes:
+  - id: 1
+    uri: "/api/*"
+    plugins:
+      key-auth:
+        header: "X-API-Key"
+        key: "secret-api-key"
+    upstream:
+      type: roundrobin
+      nodes:
+        "mock-api:8080": 1
+
+  - id: 2
+    uri: "/public/*"
+    upstream:
+      type: roundrobin
+      nodes:
+        "mock-api:8080": 1
+
+#END
