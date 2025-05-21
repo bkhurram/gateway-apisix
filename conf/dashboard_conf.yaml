@@ -6,7 +6,7 @@ conf:
     - 0.0.0.0/0
   etcd:
     endpoints:
-      - http://apisix:9180
+      - http://etcd:2379
     prefix: "/apisix"
     timeout: 30
     username: ~
