@@ -26,23 +26,103 @@ gateway-apisix/
 ```bash
 docker-compose up
 ```
+2. Create consumers
+```bash 
+curl -i -X PUT http://127.0.0.1:9180/apisix/admin/consumers \
+   -H "X-API-KEY: edd1c9f034335f136f87ad84b625c8f1" \
+   -H "Content-Type: application/json" \
+   -d '{ 
+       "username": "jack", 
+       "plugins": {
+           "key-auth": { 
+               "key": "secret-api-key"
+            }
+        } 
+    }'
+```
 
-2. Test the endpoints:
+3. Create Route 
+```bash
+curl -i -X PUT http://127.0.0.1:9180/apisix/admin/routes  \
+   -H "X-API-KEY: edd1c9f034335f136f87ad84b625c8f1" \
+   -H "Content-Type: application/json" \
+   -d '{
+      "id": "public-info",
+      "uri": "/public/*",
+      "name": "public info",
+      "host": "localhost",
+      "upstream": {
+        "type": "roundrobin",
+        "nodes": [
+          {
+            "host": "mock-api",
+            "port": 8080,
+            "weight": 1
+          }
+        ]
+      },
+      "status": 1
+   }'
+
+```
+
+```bash
+curl -i -X PUT http://127.0.0.1:9180/apisix/admin/routes  \
+   -H "X-API-KEY: edd1c9f034335f136f87ad84b625c8f1" \
+   -H "Content-Type: application/json" \
+   -d '{
+          "id": 2,
+          "uri": "/api/*",
+          "name": "api route ",
+          "methods": [
+            "GET",
+            "POST",
+            "PUT",
+            "DELETE",
+            "PATCH",
+            "HEAD",
+            "OPTIONS"
+          ],
+          "host": "localhost",
+          "plugins": {
+            "key-auth": {
+              "_meta": {
+                "disable": false
+              },
+              "key": "secret-api-key"
+            }
+          },
+          "upstream": {
+            "type": "roundrobin",
+            "nodes": [
+              {
+                "host": "mock-api",
+                "port": 8080,
+                "weight": 1
+              }
+            ]
+          },
+          "status": 1
+   }'
+```
+
+4. Test the endpoints:
 
    Public endpoint (no auth required):
    ```bash
    curl http://localhost:9080/public/info
    ```
 
+
    Secure endpoint (auth required):
    ```bash
    # This will fail with 401 Unauthorized
    curl http://localhost:9080/api/secure
-
-   # This will succeed
+   ```
+   # This will succeed,
+```bash
    curl http://localhost:9080/api/secure \
-     -H "X-API-Key: your-api-key" \
-     -H "Authorization: Bearer your-token"
+      -H "apikey: secret-api-key"
    ```
 
 ## How It Works
