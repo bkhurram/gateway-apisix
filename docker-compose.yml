@@ -49,6 +49,44 @@ services:
       - apisix
       - etcd
 
+  mysql:
+    image: 'mysql/mysql-server:8.0'
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: "mydatabase"
+      MYSQL_USER: 'myroot'
+      MYSQL_PASSWORD: 'mypass'
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - apisix-network
+
+  app:
+    build:
+      args:
+        - INSTALL_XDEBUG=true
+        - INSTALL_E2E=false
+      context: ./docker/php/
+      dockerfile: Dockerfile
+    ports:
+      - '${APP_PORT:-3000}:80'
+    env_file:
+      - ./docker/httpd/env
+    environment:
+      PHP_IDE_CONFIG: serverName=user-api
+    volumes:
+      - ./projects/user-api:/var/www/vhosts/user-api
+      - ./docker/httpd/conf.d/:/etc/httpd/conf.d/
+    networks:
+      apisix-network:
+        aliases:
+          - user-api.lan
+    depends_on:
+      - mysql
+
   mock-api:
     image: node:18-alpine
     volumes:
@@ -66,4 +104,6 @@ networks:
 
 volumes:
   etcd_data:
+    driver: local
+  mysql_data:
     driver: local

@@ -9,3 +9,6 @@ ssh-apisix:
 
 ssh-etcd:
 	docker-compose exec -it etcd bash
+
+ssh-app:
+	docker-compose exec -it app bash

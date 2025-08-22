@@ -1,0 +1,29 @@
+### GET PUBLIC
+GET http://localhost:9080/public/info
+Accept: application/json
+
+
+### SECURE TOKEN
+GET http://localhost:9080/api/secure
+apikey: secret-api-key
+
+### LOGIN
+POST http://user-api.lan:9080/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "kb@test.com",
+  "password": "password"
+}
+
+### GET USERS
+GET http://user-api.lan:9080/users
+Accept: application/json
+Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJuYW1lIjoia2h1cnJhbSBiYXNoaXIiLCJlbWFpbCI6ImtiQHRlc3QuY29tIiwiZ2l2ZW5OYW1lIjoia2h1cnJhbSIsImZhbWlseU5hbWUiOiJiYXNoaXIiLCJleHAiOjE3NTU3OTI3MjMsImlhdCI6MTc1NTc4OTEyM30.5cnacau9mEgGK_egGEPlYcHbVKCeJ5759QqE6UDvabw"
+
+
+### GET POSTS
+GET http://user-api.lan:9080/posts
+Accept: application/json
+Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJuYW1lIjoia2h1cnJhbSBiYXNoaXIiLCJlbWFpbCI6ImtiQHRlc3QuY29tIiwiZ2l2ZW5OYW1lIjoia2h1cnJhbSIsImZhbWlseU5hbWUiOiJiYXNoaXIiLCJleHAiOjE3NTU3OTI3MjMsImlhdCI6MTc1NTc4OTEyM30.5cnacau9mEgGK_egGEPlYcHbVKCeJ5759QqE6UDvabw"
