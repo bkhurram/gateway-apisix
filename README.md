@@ -120,7 +120,7 @@ curl -i -X PUT http://127.0.0.1:9180/apisix/admin/routes  \
    curl http://localhost:9080/api/secure
    ```
    # This will succeed,
-```bash
+   ```bash
    curl http://localhost:9080/api/secure \
       -H "apikey: secret-api-key"
    ```
@@ -149,3 +149,11 @@ The APISIX Dashboard provides a web UI for managing APISIX configuration:
 - Configure plugins visually
 - Monitor APISIX status
 - Manage API endpoints without editing configuration files
+
+### Custom plugin
+For update schema with new custom plugin, run cmd: 
+1. execute for regenerate schema.json
+   ```bash
+   curl localhost:9090/v1/schema > ./conf/schema.json
+   ```
+2. restart APISIX Dashboard docker container 

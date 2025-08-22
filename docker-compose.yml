@@ -19,12 +19,13 @@ services:
     image: apache/apisix:3.12.0-debian
     volumes:
       - ./conf/config.yaml:/usr/local/apisix/conf/config.yaml
-      - ./plugins:/usr/local/apisix/plugins
-      - ./logs:/usr/local/apisix/logs
+      - ./plugins:/usr/local/apisix/custom/apisix/plugins/
+      #- ./logs:/usr/local/apisix/logs
     ports:
       - "9080:9080"
       - "9180:9180"
       - "9443:9443"
+      - "9090:9090" # apix control
     environment:
       - APISIX_STAND_ALONE=false
       - APISIX_ROUTER_HTTP_STRICT_MATCH=false
@@ -39,6 +40,7 @@ services:
     image: apache/apisix-dashboard:3.0.0-alpine
     volumes:
       - ./conf/dashboard_conf.yaml:/usr/local/apisix-dashboard/conf/conf.yaml
+      - ./conf/schema.json:/usr/local/apisix-dashboard/conf/schema.json
     ports:
       - "9000:9000"
     networks:
