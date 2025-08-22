@@ -76,7 +76,7 @@ function _M.access(conf, ctx)
     -- Optional: parse user info from res.body and set to ctx
     core.log.info("JWT validated successfully")
 
-    local body   = core.json.decode(res.body) // parse str json
+    local body   = core.json.decode(res.body) -- parse str json
 
     -- set request header
     ngx.req.set_header(conf.header_user, body.id)
